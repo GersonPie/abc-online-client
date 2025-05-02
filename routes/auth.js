@@ -6,8 +6,8 @@ const router = express.Router();
 // Register
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    const user = new User({ name, email, password });
+    const { name, phone, password } = req.body;
+    const user = new User({ name, phone, password });
     await user.save();
     res.status(201).json({ message: 'User created' });
   } catch (err) {
@@ -18,15 +18,15 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const { phone, password } = req.body;
+    const user = await User.findOne({ phone });
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
+    res.json({ token, user: { id: user._id, name: user.name, phone: user.phone } });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
