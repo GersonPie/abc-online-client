@@ -229,7 +229,7 @@ export const RegisterDialog = ({ isOpen, onClose, switchToLogin} : { isOpen: boo
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-center">Cadastrar</DialogTitle>
           <DialogDescription className="text-center">
-            Crie sua conta para acessar os cursos da Aula Azul
+            Crie sua conta para acessar os cursos da abc Online
           </DialogDescription>
         </DialogHeader>
 
