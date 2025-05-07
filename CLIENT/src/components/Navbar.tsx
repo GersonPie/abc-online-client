@@ -1,14 +1,63 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { MenuIcon, X } from 'lucide-react';
 import AuthDialogs from './AuthDialogs';
 
+interface UserInfo {
+  name?: string;
+  email?: string;
+  phone?: string;
+}
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          
+          return;
+        }
+  
+        const response = await fetch('http://localhost:8000/api/auth/profile', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to fetch profile');
+        }
+        if(response.status === 401) {
+          // Token is invalid or expired
+          localStorage.removeItem('token');
+          setUserInfo(null); 
+          return;
+        }
+  
+        const data = await response.json();
+        setUserInfo(data);
+  
+      } catch (error) {
+        console.error('Profile fetch error:', error);
+        // Clear invalid token
+        localStorage.removeItem('token');
+        setUserInfo(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchProfile();
+  }, []);
 
   const handleOpenLogin = () => {
     setIsLoginOpen(true);
@@ -51,30 +100,37 @@ const Navbar = () => {
                 </Link>
               </div>
               <div className="hidden sm:ml-8 sm:flex sm:space-x-6">
+                <Link to="/perfil" className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-900 hover:border-aulaazul-300">
+                  {userInfo?.name ? userInfo.name : ''}
+                </Link>
                 <Link to="/" className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-aulaazul-300">
                   Início
                 </Link>
                 <Link to="/cursos" className="inline-flex items-center px-1 pt-1 border-b-2 border-aulaazul-500 text-sm font-medium text-gray-900">
                   Cursos
                 </Link>
-                <Link to="/sobre" className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-aulaazul-300">
-                  Sobre
-                </Link>
-                <Link to="/contato" className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-aulaazul-300">
-                  Contato
-                </Link>
               </div>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:items-center">
-              <Button variant="ghost" className="text-gray-600 hover:text-gray-900" onClick={handleOpenLogin}>
-                Entrar
-              </Button>
-              <Button 
-                className="bg-aulaazul-500 hover:bg-aulaazul-600 ml-4"
-                onClick={handleOpenRegister}
-              >
-                Cadastrar
-              </Button>
+              {userInfo ? (
+                <Link to="/perfil">
+                  <Button variant="ghost" className="text-gray-600 hover:text-gray-900">
+                    Minha Conta
+                  </Button>
+                </Link>
+              ) : (
+                <>
+                  <Button variant="ghost" className="text-gray-600 hover:text-gray-900" onClick={handleOpenLogin}>
+                    Entrar
+                  </Button>
+                  <Button 
+                    className="bg-aulaazul-500 hover:bg-aulaazul-600 ml-4"
+                    onClick={handleOpenRegister}
+                  >
+                    Cadastrar
+                  </Button>
+                </>
+              )}
             </div>
             <div className="-mr-2 flex items-center sm:hidden">
               <button
@@ -104,46 +160,49 @@ const Navbar = () => {
               </Link>
               <Link
                 to="/cursos"
-                className="bg-aulaazul-50 border-aulaazul-500 text-aulaazul-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                className="border-transparent text-gray-600 hover:bg-gray-50 hover:border-aulaazul-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Cursos
               </Link>
               <Link
-                to="/sobre"
+                to="/perfil"
                 className="border-transparent text-gray-600 hover:bg-gray-50 hover:border-aulaazul-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Sobre
-              </Link>
-              <Link
-                to="/contato"
-                className="border-transparent text-gray-600 hover:bg-gray-50 hover:border-aulaazul-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Contato
+                {userInfo?.name ? userInfo.name : 'Perfil'}
               </Link>
             </div>
             <div className="pt-4 px-4 flex space-x-4">
-              <Button 
-                variant="outline" 
-                className="w-full"
-                onClick={() => {
-                  handleOpenLogin();
-                  setIsMenuOpen(false);
-                }}
-              >
-                Entrar
-              </Button>
-              <Button 
-                className="bg-aulaazul-500 hover:bg-aulaazul-600 w-full"
-                onClick={() => {
-                  handleOpenRegister();
-                  setIsMenuOpen(false);
-                }}
-              >
-                Cadastrar
-              </Button>
+              {userInfo ? (
+                <Link to="/perfil" className="w-full">
+                  <Button className="w-full">
+                    Minha Conta
+                  </Button>
+                </Link>
+              ) : (
+                <>
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => {
+                      handleOpenLogin();
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Entrar
+                  </Button>
+                  <Button 
+                    className="bg-aulaazul-500 hover:bg-aulaazul-600 w-full"
+                    onClick={() => {
+                      handleOpenRegister();
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Cadastrar
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         )}

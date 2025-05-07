@@ -90,14 +90,14 @@ const CourseDetailsDialog = ({ isOpen, onClose, course, onEnroll }: CourseDetail
               </ul>
             )}
 
-            {course.instructor && (
+            {course?.instructor && (
               <div className="mt-6">
                 <h3 className="text-lg font-bold mb-3">Instrutor</h3>
                 <div className="flex items-center gap-3">
-                  {course.instructor.image ? (
+                  {course.instructor?.image ? (
                     <img 
-                      src={course.instructor.image} 
-                      alt={course.instructor.name}
+                      src={course.instructor?.image} 
+                      alt={course.instructor?.name}
                       className="w-12 h-12 rounded-full object-cover" 
                     />
                   ) : (
@@ -106,8 +106,8 @@ const CourseDetailsDialog = ({ isOpen, onClose, course, onEnroll }: CourseDetail
                     </div>
                   )}
                   <div>
-                    <p className="font-medium">{course.instructor.name}</p>
-                    <p className="text-sm text-gray-600">{course.instructor.bio}</p>
+                    <p className="font-medium">{course?.instructor?.name}</p>
+                    <p className="text-sm text-gray-600">{course?.instructor?.bio}</p>
                   </div>
                 </div>
               </div>

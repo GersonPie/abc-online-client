@@ -9,8 +9,8 @@ const Footer = () => {
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8 xl:col-span-1">
             <div className="flex items-center">
-              <span className="text-2xl font-bold text-white">Aula Azul</span>
-              <span className="ml-1 text-2xl font-light text-aulaazul-400">Connect</span>
+              <span className="text-2xl font-bold text-white">Abc</span>
+              <span className="ml-1 text-2xl font-light text-aulaazul-400">Online</span>
             </div>
             <p className="text-gray-400 text-base">
               Transformando conhecimento em oportunidades através de cursos online de qualidade.
@@ -146,7 +146,7 @@ const Footer = () => {
         </div>
         <div className="mt-12 border-t border-gray-700 pt-8">
           <p className="text-base text-gray-400 xl:text-center">
-            &copy; {new Date().getFullYear()} Aula Azul Connect. Todos os direitos reservados.
+            &copy; {new Date().getFullYear()} ABC Online. Todos os direitos reservados.
           </p>
         </div>
       </div>

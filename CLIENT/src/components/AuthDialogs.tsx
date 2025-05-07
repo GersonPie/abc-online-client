@@ -55,18 +55,30 @@ export const LoginDialog = ({
     }
     
     // Here you would normally handle authentication
-    fetch('http://localhost:5000/api/auth/login', {
+    fetch('http://localhost:8000/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         password: formData.password,
-        phone: formData.email,
+        email: formData.email,
         remember: formData.remember
       })
+    }).then(async response => {
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        toast.success('Login realizado com sucesso!');
+        
+        onClose();
+      } else {
+        response.json().then(data => toast.error(data.message) || 'Erro ao fazer login');
+        
+      }
     })
-    onClose();
+    
   };
 
   return (
@@ -146,15 +158,7 @@ export const LoginDialog = ({
   );
 };
 
-export const RegisterDialog = ({ 
-  isOpen, 
-  onClose, 
-  switchToLogin 
-}: { 
-  isOpen: boolean;
-  onClose: () => void;
-  switchToLogin: () => void;
-}) => {
+export const RegisterDialog = ({ isOpen, onClose, switchToLogin} : { isOpen: boolean; onClose: () => void; switchToLogin: () => void;}) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -190,7 +194,7 @@ export const RegisterDialog = ({
       return;
     }
     
-    fetch('http://localhost:5000/api/auth/register', {
+    fetch('http://localhost:8000/api/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -207,7 +211,7 @@ export const RegisterDialog = ({
         onClose();
         switchToLogin();
       } else {
-        toast.error('Erro ao cadastrar. Tente novamente.');
+        response.json().then(data => toast.error(data.message) || 'Erro ao cadastrar');
         
       }
     }).catch(error => {

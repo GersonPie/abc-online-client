@@ -4,15 +4,74 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Index from "./pages/Index";
 import Cursos from "./pages/Cursos";
 import Sobre from "./pages/Sobre";
 import Contato from "./pages/Contato";
 import NotFound from "./pages/NotFound";
+import AdminPage from "./pages/Admin";
+import { toast } from "sonner";
+import { User } from "lucide-react";
 
 const queryClient = new QueryClient();
+interface UserInfo {
+  name?: string;
+  email?: string;
+  phone?: string;
+}
 
-const App = () => (
+const App = () => {
+  const [login, setLogin] = useState(false);
+  const [user, setUser] = useState<UserInfo | null>(null)
+
+useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setLogin(true);
+      toast.success("Está Logado como " + user?.name, {
+        description: "Seja bem-vindo de volta!"});
+    } else {
+      setLogin(false);
+    }
+  }
+  , [login]);
+  useEffect( () => {
+    const login = async () => {
+      if(!localStorage.getItem("token")) {
+        setLogin(false);
+        setUser(null); 
+        return;
+      }
+      const login_response = await fetch('http://localhost:8000/api/auth/profile', 
+      {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token") || ''} ` ,
+        },
+      });
+      if (!login_response.ok) {
+        console.log("Login failed");
+        return;
+      }
+      if (login_response.status === 401) {
+        // Token is invalid or expired
+        localStorage.removeItem('token');
+        setLogin(false);
+        setUser(null); 
+        return;
+      }
+      
+      const data = await login_response.json();
+      console.log(data);
+      setLogin(data.login);
+      setUser(data);
+    };
+    login();
+   
+  }, []);
+
+  return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -23,12 +82,15 @@ const App = () => (
           <Route path="/cursos" element={<Cursos />} />
           <Route path="/sobre" element={<Sobre />} />
           <Route path="/contato" element={<Contato />} />
+          <Route path="/admin" element={<AdminPage />} />
+          {/* ADD ALL CUSTOM ROUTES BELOW THE CATCH-ALL "*" ROUTE */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  )
+};
 
 export default App;
