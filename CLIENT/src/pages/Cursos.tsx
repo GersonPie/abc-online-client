@@ -129,7 +129,7 @@ const Cursos = () => {
   useEffect(() => {
     const fetchCourses = async ()=>{
       try{
-        const coursesList_proto = await fetch('http://localhost:8000/api/cursos/todos')
+        const coursesList_proto = await fetch('http://129.151.181.243/api/cursos/todos')
         const coursesList = await coursesList_proto.json();
         console.log(coursesList);
         setCoursesList(coursesList);
