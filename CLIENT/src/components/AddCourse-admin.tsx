@@ -93,7 +93,7 @@ const AddCourseForm = ({ course, onSuccess }: AddCourseFormProps) => {
       const token = localStorage.getItem('token');
       if (!token) throw new Error('Authentication required');
 
-      const url = course ? `http://129.151.181.243/api/cursos/curso/${course._id}` : 'http://129.151.181.243/api/cursos/addcurso';
+      const url = course ? `http://129.151.181.243/api/api/cursos/curso/${course._id}` : 'http://129.151.181.243/api/api/cursos/addcurso';
       const method = course ? 'PUT' : 'POST';
 
       const response = await fetch(url, {

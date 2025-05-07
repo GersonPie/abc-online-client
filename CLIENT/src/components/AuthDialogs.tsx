@@ -55,7 +55,7 @@ export const LoginDialog = ({
     }
     
     // Here you would normally handle authentication
-    fetch('http://129.151.181.243/api/auth/login', {
+    fetch('http://129.151.181.243/api/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -194,7 +194,7 @@ export const RegisterDialog = ({ isOpen, onClose, switchToLogin} : { isOpen: boo
       return;
     }
     
-    fetch('http://129.151.181.243/api/auth/register', {
+    fetch('http://129.151.181.243/api/api/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
