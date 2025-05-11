@@ -2,19 +2,19 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // If using React Router
 
 interface LoginFormData {
-  username: string;
+  email: string;
   password: string;
 }
 
 interface LoginFormErrors {
-  username?: string;
+  email?: string;
   password?: string;
   general?: string;
 }
 
 export default function AdminLoginForm() {
   const [formData, setFormData] = useState<LoginFormData>({
-    username: '',
+    email: '',
     password: '',
   });
   const [errors, setErrors] = useState<LoginFormErrors>({});
@@ -39,8 +39,8 @@ export default function AdminLoginForm() {
   const validateForm = (): boolean => {
     const newErrors: LoginFormErrors = {};
     
-    if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Username is required';
     }
     
     if (!formData.password) {
@@ -62,7 +62,7 @@ export default function AdminLoginForm() {
     
     try {
       // Replace with your actual authentication API call
-      const response = await fetch('http://129.151.181.243/api/api/admin/login', {
+      const response = await fetch('http://localhost:8000/api/auth/adminLogin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ export default function AdminLoginForm() {
       });
       
       if (response.ok) {
-        navigate('http://129.151.181.243/admin/dashboard'); // React Router navigation
+        location.href = 'http://localhost:8080/adm-dashboard'; // React Router navigation
         // Or use window.location.href = '/admin/dashboard' if not using Router
       } else {
         const data = await response.json();
@@ -120,22 +120,22 @@ export default function AdminLoginForm() {
           <div className="rounded-md shadow-sm space-y-4">
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                Username
+                email
               </label>
               <div className="mt-1 relative">
                 <input
-                  id="username"
-                  name="username"
+                  id="email"
+                  name="email"
                   type="text"
-                  autoComplete="username"
+                  autoComplete="email"
                   required
-                  value={formData.username}
+                  value={formData.email}
                   onChange={handleChange}
-                  className={`appearance-none block w-full px-3 py-2 border ${errors.username ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
-                  placeholder="Enter your username"
+                  className={`appearance-none block w-full px-3 py-2 border ${errors.email ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                  placeholder="Enter your email"
                 />
-                {errors.username && (
-                  <p className="mt-2 text-sm text-red-600">{errors.username}</p>
+                {errors.email && (
+                  <p className="mt-2 text-sm text-red-600">{errors.email}</p>
                 )}
               </div>
             </div>

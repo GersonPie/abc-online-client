@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import CourseDetailsDialog from '@/components/CourseDetailsDialog';
-import EnrollDialog from '@/components/EnrollDialog';
 import { toast } from 'sonner';
+import { FaClock, FaLevelUpAlt, FaCalendarAlt, FaTag } from 'react-icons/fa';
 
 interface Course {
   id: number;
@@ -18,23 +14,14 @@ interface Course {
   duration: string;
   nextClass: string;
   image: string;
-  instructor?: {
-    name: string;
-    bio: string;
-  };
-  syllabus?: string[];
 }
 
-// Filter options
 const categories = ['Todos', 'Tecnologia', 'Marketing', 'Negócios', 'Idiomas', 'Design'];
 const levels = ['Todos', 'Básico', 'Intermediário', 'Avançado'];
 
-const Cursos = () => {
+const ABCCoursesGallery = () => {
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   const [selectedLevel, setSelectedLevel] = useState('Todos');
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const [isEnrollOpen, setIsEnrollOpen] = useState(false);
   const [coursesList, setCoursesList] = useState<Course[]>([]);
 
   useEffect(() => {
@@ -42,214 +29,112 @@ const Cursos = () => {
       try {
         const response = await fetch('http://129.151.181.243/api/api/cursos/todos');
         const data = await response.json();
-        
-        const formattedCourses = data.map((course: any) => ({
-          id: course.id,
-          title: course.title || "Curso sem título",
-          description: course.description || "Descrição não disponível",
-          price: course.price ? `MZN ${course.price}` : "Preço não disponível",
-          category: course.category || "Sem categoria",
-          level: course.level || "Nível não especificado",
-          duration: course.duration || "Duração não especificada",
-          nextClass: course.nextClass || "Data não definida",
-          image: course.image || "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=2070&auto=format&fit=crop",
-          instructor: course.instructor || undefined,
-          syllabus: course.syllabus || undefined
+        const formatted = data.map((course: any) => ({
+          ...course,
+          price: course.price ? `MZN ${course.price}` : 'Preço não disponível',
+          image: course.image || 'https://source.unsplash.com/600x400/?classroom,learning'
         }));
-        
-        setCoursesList(formattedCourses);
-        if (formattedCourses.length === 0) {
-          toast.error('Nenhum curso encontrado. Tente novamente mais tarde.');
-        }
-      } catch (error) {
-        console.error('Error fetching courses:', error);
-        toast.error('Erro ao carregar cursos. Tente novamente mais tarde.');
+        setCoursesList(formatted);
+      } catch (err) {
+        toast.error('Erro ao carregar cursos.');
       }
     };
-    
-    fetchCourses(); 
+    fetchCourses();
   }, []);
 
-  const filteredCourses = coursesList.filter(course => {
-    const categoryMatch = selectedCategory === 'Todos' || course.category === selectedCategory;
-    const levelMatch = selectedLevel === 'Todos' || course.level === selectedLevel;
-    return categoryMatch && levelMatch;
+  const filtered = coursesList.filter(course => {
+    const matchCategory = selectedCategory === 'Todos' || course.category === selectedCategory;
+    const matchLevel = selectedLevel === 'Todos' || course.level === selectedLevel;
+    return matchCategory && matchLevel;
   });
 
-  const handleOpenDetails = (course: Course) => {
-    const detailedCourse = {
-      ...course,
-      instructor: course.instructor || {
-        name: "Instrutor não especificado",
-        bio: "Informações do instrutor não disponíveis"
-      },
-      syllabus: course.syllabus || ["Ementa não disponível no momento"]
-    };
-    setSelectedCourse(detailedCourse);
-    setIsDetailsOpen(true);
-  };
-
-  const handleCloseDetails = () => {
-    setIsDetailsOpen(false);
-  };
-
-  const handleOpenEnroll = () => {
-    setIsDetailsOpen(false);
-    setIsEnrollOpen(true);
-  };
-
-  const handleCloseEnroll = () => {
-    setIsEnrollOpen(false);
-  };
-
-  const handleDirectEnroll = (course: Course) => {
-    setSelectedCourse(course);
-    setIsEnrollOpen(true);
-  };
-
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      
-      <main className="flex-grow">
-        <div className="bg-aulaazul-50 py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h1 className="text-4xl font-bold text-gray-900 mb-4 font-playfair">Nossos Cursos</h1>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Descubra cursos de alta qualidade ministrados por especialistas da indústria. 
-                Todas as aulas são realizadas via Microsoft Teams com suporte via WhatsApp.
-              </p>
-            </div>
+    <section className="py-12 bg-gradient-to-br from-white to-gray-100 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4">
+        <h2 className="text-4xl font-bold text-center text-aulaazul-800 font-playfair mb-2">
+          Cursos da ABC Online
+        </h2>
+        <p className="text-center text-gray-600 mb-10">
+          Aprenda com os melhores em um ambiente online confortável e dinâmico.
+        </p>
+
+        {/* Filters */}
+        <div className="flex flex-col md:flex-row justify-between mb-8 gap-4">
+          <div className="flex gap-2 overflow-x-auto">
+            {categories.map(cat => (
+              <Button
+                key={cat}
+                variant={selectedCategory === cat ? 'default' : 'outline'}
+                className="whitespace-nowrap"
+                onClick={() => setSelectedCategory(cat)}
+              >
+                {cat}
+              </Button>
+            ))}
+          </div>
+
+          <div className="flex gap-2 overflow-x-auto">
+            {levels.map(level => (
+              <Button
+                key={level}
+                variant={selectedLevel === level ? 'default' : 'outline'}
+                className="whitespace-nowrap"
+                onClick={() => setSelectedLevel(level)}
+              >
+                {level}
+              </Button>
+            ))}
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="mb-8">
-            <div className="mb-4">
-              <h2 className="text-lg font-medium mb-2">Categorias</h2>
-              <div className="flex flex-wrap gap-2">
-                {categories.map(category => (
-                  <Badge 
-                    key={category}
-                    className={`cursor-pointer px-3 py-1 text-sm ${
-                      selectedCategory === category 
-                        ? 'bg-aulaazul-500 hover:bg-aulaazul-600' 
-                        : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                    }`}
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    {category}
-                  </Badge>
-                ))}
+        {/* Course Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filtered.map(course => (
+            <div
+              key={course.id}
+              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all"
+            >
+              <div className="relative h-48">
+                <img
+                  src={course.image}
+                  alt={course.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                  <h3 className="text-white text-lg font-semibold">{course.title}</h3>
+                </div>
               </div>
-            </div>
-            
-            <div>
-              <h2 className="text-lg font-medium mb-2">Níveis</h2>
-              <div className="flex flex-wrap gap-2">
-                {levels.map(level => (
-                  <Badge 
-                    key={level}
-                    className={`cursor-pointer px-3 py-1 text-sm ${
-                      selectedLevel === level 
-                        ? 'bg-aulaazul-500 hover:bg-aulaazul-600' 
-                        : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                    }`}
-                    onClick={() => setSelectedLevel(level)}
-                  >
-                    {level}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          </div>
 
-          {filteredCourses.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-lg text-gray-600">Nenhum curso encontrado com os filtros selecionados.</p>
+              <div className="p-4 space-y-2">
+                <p className="text-sm text-gray-600 line-clamp-3">{course.description}</p>
+                <div className="flex flex-wrap items-center text-sm text-gray-500 gap-2 mt-2">
+                  <div className="flex items-center gap-1"><FaTag className="text-aulaazul-600" /> {course.category}</div>
+                  <div className="flex items-center gap-1"><FaLevelUpAlt className="text-aulaazul-600" /> {course.level}</div>
+                  <div className="flex items-center gap-1"><FaClock className="text-aulaazul-600" /> {course.duration}</div>
+                  <div className="flex items-center gap-1"><FaCalendarAlt className="text-aulaazul-600" /> {new Date(course.nextClass).toLocaleDateString('pt-PT')}</div>
+                </div>
+                <div className="mt-4 flex justify-between items-center">
+                  <span className="text-aulaazul-700 font-bold">{course.price}</span>
+                  <Button
+                    className="bg-aulaazul-500 hover:bg-aulaazul-600 text-white text-sm"
+                    onClick={() => location.href = 'https://www.paypal.com/ncp/payment/FN8LP58VYUP4Y'}
+                  >
+                    Inscrever-se
+                  </Button>
+                </div>
+              </div>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredCourses.map(course => (
-                <Card key={course.id} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                  <div className="h-48 overflow-hidden">
-                    <img 
-                      src={course.image} 
-                      alt={course.title}
-                      className="w-full h-full object-cover transition-transform hover:scale-105"
-                    />
-                  </div>
-                  
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="text-xl font-playfair">{course.title}</CardTitle>
-                      <Badge variant="secondary">{course.category}</Badge>
-                    </div>
-                    <CardDescription>{course.description}</CardDescription>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-500">Duração:</span>
-                        <span className="font-medium">{course.duration}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-500">Nível:</span>
-                        <span className="font-medium">{course.level}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-500">Próxima turma:</span>
-                        <span className="font-medium">{new Date(course.nextClass).toLocaleDateString('pt-PT')}</span>
-                      </div>
-                      <div className="flex justify-between mt-4">
-                        <span className="text-gray-500">Investimento:</span>
-                        <span className="font-bold text-lg text-aulaazul-700">{course.price}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                  
-                  <CardFooter className="flex justify-between">
-                    <Button 
-                      variant="outline"
-                      onClick={() => handleOpenDetails(course)}
-                    >
-                      Mais detalhes
-                    </Button>
-                    <Button 
-                      className="bg-aulaazul-500 hover:bg-aulaazul-600"
-                      onClick={() => location.href = 'https://www.paypal.com/ncp/payment/FN8LP58VYUP4Y'}
-                    >
-                      Inscrever-se
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          )}
+          ))}
         </div>
-      </main>
-      
-      {selectedCourse && (
-        <>
-          <CourseDetailsDialog 
-            isOpen={isDetailsOpen} 
-            onClose={handleCloseDetails} 
-            course={selectedCourse} 
-            onEnroll={handleOpenEnroll}
-          />
-          <EnrollDialog 
-            isOpen={isEnrollOpen} 
-            onClose={handleCloseEnroll} 
-            course={selectedCourse}
-          />
-        </>
-      )}
-      
-      <Footer />
-    </div>
+
+        {filtered.length === 0 && (
+          <div className="text-center mt-16 text-gray-600">
+            Nenhum curso encontrado com os filtros aplicados.
+          </div>
+        )}
+      </div>
+    </section>
   );
 };
 
-export default Cursos;
+export default ABCCoursesGallery;

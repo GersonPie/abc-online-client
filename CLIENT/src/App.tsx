@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { User } from "lucide-react";
 import { time } from "console";
 import { AuthProvider } from "./hooks/use-context";
+import AdminPage from "./pages/Admin";
 
 
 const queryClient = new QueryClient();
@@ -78,7 +79,8 @@ const App = () => {
           <Route path="/cursos" element={<Cursos />} />
           <Route path="/sobre" element={<Sobre />} />
           <Route path="/contato" element={<Contato />} />
-          <Route path="/admin" element={<AdminLoginPage/>} />
+          <Route path="/admin" element={<AdminLoginPage/>}/>
+          <Route path="/adm-dashboard" element={<AdminPage/>}/>
           {/* ADD ALL CUSTOM ROUTES BELOW THE CATCH-ALL "*" ROUTE */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
