@@ -62,7 +62,7 @@ export default function AdminLoginForm() {
     
     try {
       // Replace with your actual authentication API call
-      const response = await fetch('http://localhost:8000/api/auth/adminLogin', {
+      const response = await fetch('http://localhost:8000/api/api/auth/adminLogin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ export default function AdminLoginForm() {
       });
       
       if (response.ok) {
-        location.href = 'http://localhost:8080/adm-dashboard'; // React Router navigation
+        window.location.href = 'http://localhost:8080/adm-dashboard'; // React Router navigation
         // Or use window.location.href = '/admin/dashboard' if not using Router
       } else {
         const data = await response.json();
