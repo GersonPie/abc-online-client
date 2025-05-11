@@ -5,22 +5,22 @@ import { Button } from '@/components/ui/button';
 const Hero = () => {
   return (
     <div className="relative overflow-hidden bg-gradient-to-r from-aulaazul-700 to-aulaazul-900">
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] opacity-10 bg-cover bg-center"></div>
+      <div className="absolute inset-0 bg-[url('https://i.imgur.com/VqLrnx2.jpeg')] opacity-60 bg-cover bg-center"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="py-20 md:py-28 lg:py-32">
           <div className="max-w-3xl">
             <h1 className="font-heading text-white mb-6 leading-tight">
               Aprenda Com Os Melhores <span className="text-aulaazul-200">Cursos Online</span>
             </h1>
-            <p className="text-aulaazul-100 text-lg md:text-xl mb-8 font-body">
-              Expanda seus conhecimentos com nossos cursos online ministrados através do Microsoft Teams. 
+            <p className="text-white text-lg md:text-xl mb-8 font-body">
+              Expanda seus conhecimentos com nossos cursos online. 
               Tenha acesso direto aos professores via WhatsApp e amplie suas oportunidades.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="bg-white text-aulaazul-700 hover:bg-aulaazul-50 font-medium">
                 Ver cursos
               </Button>
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10 font-medium">
+              <Button variant="outline" size="lg" className="border-white text-white bg-aulaazul hover:bg-white/10 font-medium">
                 Saiba mais
               </Button>
             </div>

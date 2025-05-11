@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { FaClock, FaLevelUpAlt, FaCalendarAlt, FaTag } from 'react-icons/fa';
+import Navbar from '@/components/Navbar';
 
 interface Course {
   id: number;
@@ -16,8 +17,8 @@ interface Course {
   image: string;
 }
 
-const categories = ['Todos', 'Tecnologia', 'Marketing', 'Negócios', 'Idiomas', 'Design'];
-const levels = ['Todos', 'Básico', 'Intermediário', 'Avançado'];
+const categories = ['Todos', 'Tecnologia', 'Marketing', 'Negócio', 'Idiomas', 'Design'];
+const levels = ['Todos', 'Iniciante', 'Intermediario', 'Avançado'];
 
 const ABCCoursesGallery = () => {
   const [selectedCategory, setSelectedCategory] = useState('Todos');
@@ -49,7 +50,13 @@ const ABCCoursesGallery = () => {
   });
 
   return (
+    <>
+    
+    <Navbar />
+
+
     <section className="py-12 bg-gradient-to-br from-white to-gray-100 min-h-screen">
+      
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-4xl font-bold text-center text-aulaazul-800 font-playfair mb-2">
           Cursos da ABC Online
@@ -134,6 +141,8 @@ const ABCCoursesGallery = () => {
         )}
       </div>
     </section>
+    </>
+    
   );
 };
 

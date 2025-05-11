@@ -117,7 +117,7 @@ const Navbar = () => {
                 <Link to="/" className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-aulaazul-300">
                   Início
                 </Link>
-                <Link to="/cursos" className="inline-flex items-center px-1 pt-1 border-b-2 border-aulaazul-500 text-sm font-medium text-gray-900">
+                <Link to="/cursos" className="inline-flex items-center px-1 pt-1 border-aulaazul-500 text-sm font-medium text-gray-900">
                   Cursos
                 </Link>
               </div>

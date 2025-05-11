@@ -13,7 +13,7 @@ type Course = {
   instructor: string;
   price: number;
   category: string;
-  imageUrl: string;
+  image: string;
 };
 
 
@@ -30,7 +30,7 @@ const CourseCard = ({ course }: { course: Course }) => {
     <Card className="overflow-hidden h-full bg-white border-none shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in">
       <div className="h-48 overflow-hidden">
         <img 
-          src={course.imageUrl} 
+          src={course.image} 
           alt={course.title} 
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
         />
@@ -103,7 +103,7 @@ const FeaturedCourses = () => {
           ))}
         </div>
         <div className="mt-14 text-center">
-          <Button size="lg" className="bg-aulaazul-500 hover:bg-aulaazul-600 px-8">
+          <Button onClick={()=>location.href = '/cursos'} size="lg" className="bg-aulaazul-500 hover:bg-aulaazul-600 px-8">
             Ver todos os cursos
           </Button>
         </div>
