@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import AdminLoginPage from "./pages/AdminLogin";
 import { toast } from "sonner";
 import { User } from "lucide-react";
+import { time } from "console";
 
 const queryClient = new QueryClient();
 interface UserInfo {
@@ -25,17 +26,13 @@ const App = () => {
   const [login, setLogin] = useState(false);
   const [user, setUser] = useState<UserInfo | null>(null)
 
-useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setLogin(true);
-      toast.success("Está Logado como " + user?.name, {
-        description: "Seja bem-vindo de volta!"});
-    } else {
-      setLogin(false);
-    }
-  }
-  , [login]);
+
+//reload so that the user is updated
+  useEffect(() => {
+    if(user?.name && login == true)location.reload();
+  }, [user, login]);
+
+
   useEffect( () => {
     const login = async () => {
       if(!localStorage.getItem("token")) {
