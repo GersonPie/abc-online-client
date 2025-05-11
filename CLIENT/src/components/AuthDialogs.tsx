@@ -1,5 +1,7 @@
 
 import React, { useState } from 'react';
+
+
 import { 
   Dialog, 
   DialogContent, 
@@ -13,6 +15,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
+import { useContext } from 'react';
+import { useAuth } from '@/hooks/use-context';
+
 
 type AuthDialogsProps = {
   isLoginOpen: boolean;
@@ -38,6 +43,7 @@ export const LoginDialog = ({
     remember: false
   });
 
+  const {login} = useAuth()
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
@@ -71,6 +77,7 @@ export const LoginDialog = ({
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         toast.success('Login realizado com sucesso!');
+        login(data.user);
         onClose();
       } else {
         response.json().then(data => toast.error(data.message) || 'Erro ao fazer login');

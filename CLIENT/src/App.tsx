@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext,createContext, useEffect, useState } from "react";
 import Index from "./pages/Index";
 import Cursos from "./pages/Cursos";
 import Sobre from "./pages/Sobre";
@@ -14,6 +14,8 @@ import AdminLoginPage from "./pages/AdminLogin";
 import { toast } from "sonner";
 import { User } from "lucide-react";
 import { time } from "console";
+import { AuthProvider } from "./hooks/use-context";
+
 
 const queryClient = new QueryClient();
 interface UserInfo {
@@ -27,10 +29,7 @@ const App = () => {
   const [user, setUser] = useState<UserInfo | null>(null)
 
 
-//reload so that the user is updated
-  useEffect(() => {
-    if(user?.name && login == true)location.reload();
-  }, [user, login]);
+
 
 
   useEffect( () => {
@@ -72,7 +71,7 @@ const App = () => {
   return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      
+      <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
@@ -85,6 +84,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      </AuthProvider  >
       <Toaster />
       <Sonner />
     </TooltipProvider>

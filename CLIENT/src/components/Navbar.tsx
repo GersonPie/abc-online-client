@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { MenuIcon, X } from 'lucide-react';
 import AuthDialogs from './AuthDialogs';
+import { useAuth } from '@/hooks/use-context';
 
 interface UserInfo {
   name?: string;
@@ -17,6 +18,14 @@ const Navbar = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
 
+
+  const {user}= useAuth();
+
+  useEffect(()=>{
+    if(user){
+      setUserInfo(user);
+    }
+  }, [user])
   useEffect(() => {
     const fetchProfile = async () => {
       try {
