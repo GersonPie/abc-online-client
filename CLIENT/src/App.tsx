@@ -10,7 +10,7 @@ import Cursos from "./pages/Cursos";
 import Sobre from "./pages/Sobre";
 import Contato from "./pages/Contato";
 import NotFound from "./pages/NotFound";
-import AdminPage from "./pages/Admin";
+import AdminLoginPage from "./pages/AdminLogin";
 import { toast } from "sonner";
 import { User } from "lucide-react";
 
@@ -82,7 +82,7 @@ useEffect(() => {
           <Route path="/cursos" element={<Cursos />} />
           <Route path="/sobre" element={<Sobre />} />
           <Route path="/contato" element={<Contato />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin" element={<AdminLoginPage/>} />
           {/* ADD ALL CUSTOM ROUTES BELOW THE CATCH-ALL "*" ROUTE */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
