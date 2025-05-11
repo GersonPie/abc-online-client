@@ -43,7 +43,7 @@ useEffect(() => {
         setUser(null); 
         return;
       }
-      const login_response = await fetch('http://localhost:8000/api/auth/profile', 
+      const login_response = await fetch('http://129.151.181.243/api/api/auth/profile', 
       {
         method: 'GET',
         headers: {
@@ -55,7 +55,8 @@ useEffect(() => {
         return;
       }
       if (login_response.status === 401) {
-        // Token is invalid or expired
+        console.log("Unauthorized");
+        toast.error("Sessão expirada ou inválida. Faça login novamente.");
         localStorage.removeItem('token');
         setLogin(false);
         setUser(null); 
@@ -74,8 +75,7 @@ useEffect(() => {
   return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
+      
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
@@ -88,6 +88,8 @@ useEffect(() => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      <Toaster />
+      <Sonner />
     </TooltipProvider>
   </QueryClientProvider>
   )

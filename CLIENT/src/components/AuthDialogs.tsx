@@ -71,7 +71,6 @@ export const LoginDialog = ({
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         toast.success('Login realizado com sucesso!');
-        
         onClose();
       } else {
         response.json().then(data => toast.error(data.message) || 'Erro ao fazer login');
@@ -203,7 +202,9 @@ export const RegisterDialog = ({ isOpen, onClose, switchToLogin} : { isOpen: boo
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        password: formData.password
+        password: formData.password 
+
+        
       })
     }).then(response => {
       if (response.ok) {

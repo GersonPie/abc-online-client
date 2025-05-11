@@ -26,7 +26,7 @@ const Navbar = () => {
           return;
         }
   
-        const response = await fetch('http://localhost:8000/api/auth/profile', {
+        const response = await fetch('http://129.151.181.243/api/api/auth/profile', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -38,6 +38,8 @@ const Navbar = () => {
         }
         if(response.status === 401) {
           // Token is invalid or expired
+          console.log("Unauthorized");
+          console.error("Sessão inspirada ou inválida. Faça login novamente.");
           localStorage.removeItem('token');
           setUserInfo(null); 
           return;

@@ -27,7 +27,7 @@ const AdminPage = () => {
   const fetchCourses = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/api/cursos/todos', {
+      const response = await fetch('http://129.151.181.243/api/api/cursos/todos', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -48,7 +48,7 @@ const AdminPage = () => {
   const handleDeleteCourse = async (id: string) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8000/api/cursos/curso/${id}`, {
+      const response = await fetch(`http://129.151.181.243/api/api/cursos/curso/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
